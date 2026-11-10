@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Art & Design Exam Prep | AUBG FAR 1301</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card-bg: #181b24;
+      --card-border: #282d3c;
+      --accent: #d4af37;
+      --accent-glow: rgba(212, 175, 55, 0.25);
+      --text: #e6e8ee;
+      --text-muted: #9aa1b2;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --tag-bg: #222736;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(180deg, #161922 0%, #0f1117 100%);
+      border-bottom: 1px solid var(--card-border);
+      padding: 24px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    header.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Navigation Tabs */
+    .tabs-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 10px 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #0f1117;
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .area-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .area-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-intro {
+      background: var(--card-bg);
+      border-left: 4px solid var(--accent);
+      padding: 18px 22px;
+      border-radius: 8px;
+      margin-bottom: 28px;
+    }
+
+    .section-intro h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .section-intro p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ================= AREA 1: FLASHCARDS ================= */
+    .flashcard-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .filter-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .btn-secondary {
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #2a3142;
+      border-color: var(--accent);
+    }
+
+    .flashcards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .card-container {
+      perspective: 1000px;
+      min-height: 520px;
+      height: auto;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .card-container.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card-front {
+      background-color: var(--card-bg);
+      z-index: 2;
+    }
+
+    .card-img-wrap {
+      flex: 1;
+      width: 100%;
+      min-height: 380px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s;
+    }
+
+    .card-front:hover .card-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .card-front-footer {
+      padding: 12px 16px;
+      background: rgba(20, 24, 34, 0.95);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-num {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .card-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, #191e2b 0%, #12151e 100%);
+      transform: rotateY(180deg);
+      padding: 20px;
+      justify-content: flex-start;
+      text-align: left;
+      border-color: var(--accent);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--card-border) transparent;
+      z-index: 1;
+    }
+
+    .card-back::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .card-back::-webkit-scrollbar-thumb {
+      background: #333c50;
+      border-radius: 3px;
+    }
+
+    .card-back h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .badge-movement {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+      white-space: normal;
+      word-break: break-word;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .detail-row {
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+    }
+
+    .detail-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .detail-val {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .flip-back-prompt {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding-top: 10px;
+      border-top: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    /* ================= AREA 2: TERMS MATCHING GAME ================= */
+    .terms-game-header {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .score-board {
+      display: flex;
+      gap: 20px;
+    }
+
+    .score-stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .terms-word-bank {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .word-bank-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bank-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .term-chip {
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: grab;
+      font-weight: 500;
+      font-size: 0.9rem;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .term-chip:hover {
+      background: #2e3549;
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .term-chip.selected {
+      background: var(--accent);
+      color: #0f1117;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .term-chip.used {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+      text-decoration: line-through;
+    }
+
+    .definitions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .term-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .term-card.correct {
+      border-color: var(--success);
+      background: rgba(34, 197, 94, 0.05);
+    }
+
+    .term-card.wrong {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .term-dropzone {
+      width: 220px;
+      min-width: 220px;
+      height: 52px;
+      border: 2px dashed #3a4256;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 17, 23, 0.6);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      padding: 4px 8px;
+      text-align: center;
+    }
+
+    .term-dropzone.hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .term-dropzone.filled {
+      border-style: solid;
+      border-color: var(--card-border);
+      background: var(--tag-bg);
+    }
+
+    .term-def-text {
+      flex: 1;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .term-def-text strong {
+      color: var(--accent);
+    }
+
+    .term-status-icon {
+      width: 28px;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    /* ================= AREA 3: STYLES & VISUAL EXAMPLES ================= */
+    .periods-container {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .period-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .period-header {
+      background: linear-gradient(90deg, #1f2533 0%, #181b24 100%);
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .period-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.35rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .period-dates {
+      background: var(--tag-bg);
+      color: #c4c9d6;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+    }
+
+    .period-body {
+      padding: 24px;
+    }
+
+    .essay-prep-box {
+      background: #141720;
+      border-left: 3px solid #3b82f6;
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+    }
+
+    .essay-prep-box h4 {
+      color: #60a5fa;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .essay-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .essay-grid { grid-template-columns: 1fr; }
+      .term-card { flex-direction: column; align-items: stretch; }
+      .term-dropzone { width: 100%; min-width: 100%; }
+    }
+
+    .essay-point-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .essay-point-desc {
+      font-size: 0.9rem;
+      color: #d1d5db;
+    }
+
+    .visual-examples-heading {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      border-bottom: 1px solid #282d3c;
+      padding-bottom: 6px;
+    }
+
+    .visual-examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .visual-example-card {
+      background: #13161f;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .example-img-wrap {
+      height: 250px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .example-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .example-caption {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .example-caption h5 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .example-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .example-formal-analysis {
+      background: #191d29;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    /* ================= CAR AUDIO / TTS & WHOLE-TEXT PANELS ================= */
+    .car-audio-panel {
+      background: linear-gradient(135deg, #1b2234 0%, #141824 100%);
+      border: 2px solid var(--accent);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.12);
+    }
+
+    .car-audio-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .car-audio-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .car-audio-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .tts-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+      background: rgba(15, 17, 23, 0.65);
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-voice-main {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px var(--accent-glow);
+      transition: all 0.2s;
+    }
+
+    .btn-voice-main:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    .btn-voice-main.speaking {
+      background: #22c55e;
+      color: #052e16;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.45);
+    }
+
+    .btn-tts-ctrl {
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-tts-ctrl:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .tts-status-pill {
+      margin-left: auto;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #22283a;
+      color: #93c5fd;
+      border: 1px solid #334155;
+      font-weight: 600;
+    }
+
+    .whole-text-box {
+      background: #11141d;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      max-height: 540px;
+      overflow-y: auto;
+      line-height: 1.75;
+      font-size: 1.02rem;
+      color: #e2e8f0;
+    }
+
+    .whole-text-paragraph {
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      border-left: 3px solid transparent;
+      background: rgba(24, 27, 36, 0.65);
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .whole-text-paragraph:hover {
+      border-left-color: #64748b;
+      background: rgba(34, 39, 54, 0.85);
+    }
+
+    .whole-text-paragraph.active-reading {
+      border-left-color: var(--accent);
+      background: rgba(212, 175, 55, 0.14);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .whole-text-paragraph h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--accent);
+      font-size: 1.08rem;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .play-para-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      background: var(--tag-bg);
+      color: #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .whole-text-paragraph.active-reading .play-para-badge {
+      background: var(--accent);
+      color: #0f1117;
+      border-color: var(--accent);
+    }
+
+    footer {
+      background: #0b0d12;
+      border-top: 1px solid var(--card-border);
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">MODERN ART & DESIGN EXAM PORTAL</div>
+    <div class="brand-sub">AUBG &bull; FAR 1301 &bull; Test 1 Study Suite &bull; Prof. Iveta Slavkova</div>
+    
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchArea('area1')">
+        <span>🖼️</span> Area 1: Slide Recognition Flashcards (21 Works)
+      </button>
+      <button class="tab-btn" onclick="switchArea('area2')">
+        <span>🧩</span> Area 2: Terms Matching Quiz (17 Terms)
+      </button>
+      <button class="tab-btn" onclick="switchArea('area3')">
+        <span>🏛️</span> Area 3: Movements & Visual Examples (12 Styles)
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= AREA 1: FLASHCARDS ================= -->
+    <section id="area1" class="area-section active">
+      <div class="section-intro">
+        <h2>Area 1: Slide Recognition Flashcards (25 Points)</h2>
+        <p>The exam presents 5 slide recognition items. For each work you must identify: <strong>Artist</strong>, <strong>Title</strong>, <strong>Approximate Date</strong>, and <strong>Style / Movement</strong>. Click any card to flip and test your memory!</p>
+      </div>
+
+      <div class="flashcard-controls">
+        <div>
+          <label for="movementFilter" style="font-size: 0.9rem; color: var(--text-muted); margin-right: 8px;">Filter by Movement:</label>
+          <select id="movementFilter" class="filter-select" onchange="filterFlashcards()">
+            <option value="all">All Artworks (All 23 works)</option>
+            <option value="Impressionism">Impressionism</option>
+            <option value="Post-Impressionism">Post-Impressionism</option>
+            <option value="Arts and Crafts">Arts and Crafts</option>
+            <option value="Art Nouveau">Art Nouveau</option>
+            <option value="Vienna Secession">Vienna Secession</option>
+            <option value="Fauvism">Fauvism</option>
+            <option value="Expressionism (Der Blaue Reiter)">Expressionism (Der Blaue Reiter)</option>
+            <option value="Cubism">Cubism</option>
+            <option value="Italian Futurism">Italian Futurism</option>
+            <option value="Dada">Dada (Berlin / Zurich / New York)</option>
+            <option value="Suprematism">Suprematism</option>
+            <option value="Neo-Plasticism">Neo-Plasticism (De Stijl)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-secondary" onclick="flipAll(true)">Flip All</button>
+          <button class="btn-secondary" onclick="flipAll(false)">Reset All</button>
+          <button class="btn-secondary" onclick="shuffleFlashcards()">🔀 Shuffle</button>
+        </div>
+      </div>
+
+      <div id="flashcardsGrid" class="flashcards-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ================= AREA 2: TERMS MATCHING GAME + CAR AUDIO WHOLE TEXT ================= -->
+    <section id="area2" class="area-section">
+      <div class="section-intro">
+        <h2>Area 2: Field Terms — Car Audio Whole Text & Interactive Trainer (35 Points)</h2>
+        <p>The exam tests 5 field terms (50–100 words each). Below you have the <strong>complete expanded continuous study text for all 17 terms</strong> with built-in Text-to-Speech for hands-free listening in your car, followed by the interactive matching trainer!</p>
+      </div>
+
+      <!-- CAR AUDIO & CONTINUOUS WHOLE TEXT FOR AREA 2 -->
+      <div class="car-audio-panel">
+        <div class="car-audio-top">
+          <div>
+            <div class="car-audio-title">🚗 Car Audio Mode: All 17 Field Terms (Continuous Expanded Text)</div>
+            <div class="car-audio-sub">Turn on the voice to hear all 17 terms explained one after another, or click any paragraph below to jump straight to that term.</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <label style="font-size:0.85rem; color:var(--text-muted);">Speed:</label>
+            <select id="ttsSpeedArea2" class="filter-select" onchange="changeTtsSpeed(this.value)">
+              <option value="0.9">0.9x (Relaxed)</option>
+              <option value="1" selected>1.0x (Normal)</option>
+              <option value="1.15">1.15x (Brisk)</option>
+              <option value="1.3">1.3x (Fast Review)</option>
+            </select>
+            <select id="ttsVoiceSelect2" class="filter-select" onchange="changeTtsVoice(this.value)" style="max-width:220px;">
+              <option value="">Default English Voice</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tts-controls-bar">
+          <button id="btnSpeakArea2" class="btn-voice-main" onclick="toggleAreaSpeech('area2')">
+            🔊 Turn On Voice & Explain All 17 Terms
+          </button>
+          <button class="btn-tts-ctrl" onclick="pauseResumeSpeech()">⏯️ Pause / Resume</button>
+          <button class="btn-tts-ctrl" onclick="stepSpeech('area2', -1)">⏮️ Prev Term</button>
+          <button class="btn-tts-ctrl" onclick="stepSpeech('area2', 1)">⏭️ Next Term</button>
+          <button class="btn-tts-ctrl" onclick="stopAllSpeech()">⏹️ Stop</button>
+          <span id="ttsStatusArea2" class="tts-status-pill">Ready to play</span>
+        </div>
+
+        <div id="mp3PlayerWrapArea2" style="margin-bottom: 14px; display: none; background: #0f131d; padding: 10px 14px; border-radius: 8px; border: 1px solid #282d3c;">
+          <div style="font-size: 0.82rem; color: var(--accent); margin-bottom: 6px; font-weight: 600;">🎧 Car Bluetooth MP3 Stream (Plays even with phone screen locked):</div>
+          <audio id="mp3AudioArea2" controls preload="none" style="width: 100%; height: 38px;">
+            <source src="audio/area2_terms.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+
+        <div id="area2WholeTextContainer" class="whole-text-box">
+          <!-- Continuous 17-term expanded text rendered by JS -->
+        </div>
+      </div>
+
+      <div class="terms-game-header">
+        <div class="score-board">
+          <div class="score-stat">
+            <div id="statCompleted" class="stat-number">0 / 17</div>
+            <div class="stat-label">Matched</div>
+          </div>
+          <div class="score-stat">
+            <div id="statScore" class="stat-number">100%</div>
+            <div class="stat-label">Accuracy</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button class="btn-secondary" onclick="resetTermsGame()">🔄 Reset Game</button>
+          <button class="btn-secondary" onclick="revealAllTerms()">💡 Solve All</button>
+        </div>
+      </div>
+
+      <div class="terms-word-bank">
+        <div class="word-bank-title">
+          <span>Available Terms (Click a chip to select, then click its destination dropzone below):</span>
+          <span id="selectedTermDisplay" style="color: #60a5fa; font-weight: normal;">No term selected</span>
+        </div>
+        <div id="bankChips" class="bank-chips">
+          <!-- Chips rendered by JS -->
+        </div>
+      </div>
+
+      <div id="definitionsList" class="definitions-list">
+        <!-- Term rows rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ================= AREA 3: STYLES & VISUAL EXAMPLES + CAR AUDIO WHOLE TEXT ================= -->
+    <section id="area3" class="area-section">
+      <div class="section-intro">
+        <h2>Area 3: 12 Movements & Periods — Car Audio Essay Narratives & Visual Examples (40 Points)</h2>
+        <p>In question 3, you choose 1 out of 3 offered options from these 12 movements (400 words total). Below you have the <strong>complete full-paragraph essay text for all 12 movements</strong> with one-click voice explanation for listening in your car, plus the rubric breakdown and 2 class visual examples for each movement.</p>
+      </div>
+
+      <!-- CAR AUDIO & CONTINUOUS WHOLE TEXT FOR AREA 3 -->
+      <div class="car-audio-panel">
+        <div class="car-audio-top">
+          <div>
+            <div class="car-audio-title">🚗 Car Audio Mode: All 12 Artistic Movements (Full Essay Narratives)</div>
+            <div class="car-audio-sub">Turn on the voice to listen to full ~350–400 word exam essays for all 12 styles continuously, or click any movement paragraph to listen to it individually.</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <label style="font-size:0.85rem; color:var(--text-muted);">Speed:</label>
+            <select id="ttsSpeedArea3" class="filter-select" onchange="changeTtsSpeed(this.value)">
+              <option value="0.9">0.9x (Relaxed)</option>
+              <option value="1" selected>1.0x (Normal)</option>
+              <option value="1.15">1.15x (Brisk)</option>
+              <option value="1.3">1.3x (Fast Review)</option>
+            </select>
+            <select id="ttsVoiceSelect3" class="filter-select" onchange="changeTtsVoice(this.value)" style="max-width:220px;">
+              <option value="">Default English Voice</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tts-controls-bar">
+          <button id="btnSpeakArea3" class="btn-voice-main" onclick="toggleAreaSpeech('area3')">
+            🔊 Turn On Voice & Explain All 12 Movements
+          </button>
+          <button class="btn-tts-ctrl" onclick="pauseResumeSpeech()">⏯️ Pause / Resume</button>
+          <button class="btn-tts-ctrl" onclick="stepSpeech('area3', -1)">⏮️ Prev Movement</button>
+          <button class="btn-tts-ctrl" onclick="stepSpeech('area3', 1)">⏭️ Next Movement</button>
+          <button class="btn-tts-ctrl" onclick="stopAllSpeech()">⏹️ Stop</button>
+          <span id="ttsStatusArea3" class="tts-status-pill">Ready to play</span>
+        </div>
+
+        <div id="mp3PlayerWrapArea3" style="margin-bottom: 14px; display: none; background: #0f131d; padding: 10px 14px; border-radius: 8px; border: 1px solid #282d3c;">
+          <div style="font-size: 0.82rem; color: var(--accent); margin-bottom: 6px; font-weight: 600;">🎧 Car Bluetooth MP3 Stream (Plays even with phone screen locked):</div>
+          <audio id="mp3AudioArea3" controls preload="none" style="width: 100%; height: 38px;">
+            <source src="audio/area3_movements.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+
+        <div id="area3WholeTextContainer" class="whole-text-box">
+          <!-- Continuous 12-movement full essay text rendered by JS -->
+        </div>
+      </div>
+
+      <div id="periodsContainer" class="periods-container">
+        <!-- Movements rendered by JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AUBG Department of Modern Languages & Arts &bull; FAR 1301 Modern Art & Design (1900-1945) &bull; Prof. Iveta Slavkova</p>
+    <p style="margin-top: 6px; font-size: 0.78rem;">Designed for direct classroom exam mastery: Slide Recognition, Term Definitions, and Period Analysis.</p>
+  </footer>
+
+  <script src="study_audio_data.js"></script>
+  <script>
+    // ------------------- DATA SOURCES -------------------
+
+    // Area 1: 21 Works from the study guide (with 5a/5b and 10a/10b included)
+    const artworksData = [
+      {
+        id: 1,
+        artist: "Paul Cézanne",
+        title: "The Plate of Apples",
+        date: "c. 1877",
+        movement: "Post-Impressionism",
+        medium: "Oil on canvas, 45.8 x 54.7 cm",
+        location: "Art Institute of Chicago",
+        image: "images/1_cezanne_plate_of_apples.jpg",
+        notes: "Explores 'motif' over narrative. Structured brushwork, spatial ambiguity, multiple viewpoints anticipating Cubism."
+      },
+      {
+        id: 2,
+        artist: "Antoni Gaudí",
+        title: "Casa Batlló (Façade)",
+        date: "1906",
+        movement: "Catalan Modernism",
+        medium: "Stone, ceramic (trencadís), forged iron, glass",
+        location: "Passeig de Gràcia, Barcelona",
+        image: "images/2_gaudi_casa_batllo.jpg",
+        notes: "Organic skeletal stone balconies, iridescent mosaic facade evoking Saint George and the dragon, wavy roofline."
+      },
+      {
+        id: 3,
+        artist: "Paul Gauguin",
+        title: "The Sermon vision or Jacob and the Angel (Vision After the Sermon)",
+        date: "1888",
+        movement: "Post-Impressionism (Synthetism / Cloisonnism)",
+        medium: "Oil on canvas, 73 x 92 cm",
+        location: "National Gallery of Scotland, Edinburgh",
+        image: "images/3_gauguin_vision_after_sermon.jpg",
+        notes: "Flat vermilion red ground (non-local color), diagonal trunk separating reality from spiritual vision, Japanese influence."
+      },
+      {
+        id: 4,
+        artist: "Hector Guimard",
+        title: "A Smoking Room Sofa (Banquette de fumoir)",
+        date: "1897",
+        movement: "Art Nouveau in France and Belgium",
+        medium: "Wood (carved pear wood) and upholstery, H: 217 cm",
+        location: "Musée d'Orsay, Paris",
+        image: "images/4_guimard_smoking_room_sofa.jpg",
+        notes: "Organic 'whiplash' curve, asymmetry, structural integration of architecture and furniture (Gesamtkunstwerk)."
+      },
+      {
+        id: "5a",
+        artist: "Hector Guimard",
+        title: "Porte Dauphine Metro Station (Édicule)",
+        date: "1912 (designed 1899-1900)",
+        movement: "Art Nouveau in France and Belgium",
+        medium: "Cast iron, enameled lava stone, glass canopy",
+        location: "Porte Dauphine, Paris Métro",
+        image: "images/5a_guimard_porte_dauphine.jpg",
+        notes: "Vegetal cast-iron forms dubbed 'Style Métro' or 'Style Guimard', dragonfly-wing glass canopy, industrial mass production."
+      },
+      {
+        id: "5b",
+        artist: "Wassily Kandinsky",
+        title: "Cover of Der Blaue Reiter (Almanac)",
+        date: "1912",
+        movement: "Der Blaue Reiter (The Blue Rider, expressionism)",
+        medium: "Color woodblock engraving, print",
+        location: "Bibliothèque nationale de France, Paris",
+        image: "images/5b_kandinsky_der_blaue_reiter_cover.jpg",
+        notes: "Saint George as blue rider symbolizing spiritual renewal against materialism, primitive folk art and icon influences."
+      },
+      {
+        id: 6,
+        artist: "Josef Hoffmann",
+        title: "The Stoclet Palace (Façade & Gesamtkunstwerk)",
+        date: "1905–1911",
+        movement: "Vienna Secession (Wiener Werkstätte)",
+        medium: "Norwegian Turlogh marble cladding, gilded bronze edging",
+        location: "Brussels, Belgium",
+        image: "images/6_hoffmann_stoclet_palace.jpg",
+        notes: "Pinnacle of total work of art (Gesamtkunstwerk). Geometric rectilinearity, thin bronze frame lines, Klimt frieze inside."
+      },
+      {
+        id: 7,
+        artist: "Wassily Kandinsky",
+        title: "Composition VI",
+        date: "1913",
+        movement: "The invention of abstraction (Der Blaue Reiter)",
+        medium: "Oil on canvas, 195 x 300 cm",
+        location: "Hermitage Museum, Saint Petersburg",
+        image: "images/7_kandinsky_composition_vi.jpg",
+        notes: "Transcends catastrophic Flood/Deluge into pure spiritual symphonic harmony of line and non-representational color."
+      },
+      {
+        id: 8,
+        artist: "Gustav Klimt",
+        title: "Portrait of Adele Bloch-Bauer I",
+        date: "1907",
+        movement: "Vienna Secession",
+        medium: "Oil, gold, and silver on canvas, 138 x 138 cm",
+        location: "Neue Galerie, New York",
+        image: "images/8_klimt_adele_bloch_bauer.jpg",
+        notes: "Golden Phase, Byzantine mosaic influence, flattened decorative geometric patterning contrasting realistic face and hands."
+      },
+      {
+        id: 9,
+        artist: "Henri Matisse",
+        title: "The Woman with the Hat (Femme au chapeau)",
+        date: "1905",
+        movement: "Fauvism",
+        medium: "Oil on canvas, 80.6 x 59.7 cm",
+        location: "San Francisco Museum of Modern Art (SFMOMA)",
+        image: "images/9_matisse_woman_with_a_hat.jpg",
+        notes: "Shown at Salon d'Automne 1905 ('Donatello among the wild beasts'). Arbitrary, violent non-local colors structuring volume."
+      },
+      {
+        id: "10a",
+        artist: "Kazimir Malevich",
+        title: "Black Square",
+        date: "1913–1923 (shown Dec 1915 at 0.10)",
+        movement: "Supermatism (Malevitch)",
+        medium: "Oil on canvas, 106.2 x 106.5 cm",
+        location: "National Russian Museum / Tretyakov Gallery",
+        image: "images/10a_malevich_black_square.jpg",
+        notes: "The 'zero of form' and icon of modernity, hung in the sacred red/beautiful corner reserved for Russian Orthodox icons."
+      },
+      {
+        id: "10b",
+        artist: "William Morris",
+        title: "The Strawberry Thief",
+        date: "1883",
+        movement: "Arts and Crafts",
+        medium: "Block-printed pattern on cotton (indigo discharge technique)",
+        location: "Victoria & Albert Museum, London",
+        image: "images/10b_morris_strawberry_thief.jpg",
+        notes: "Reaction against industrial factory degradation. Hand woodblock craftsmanship, medieval guild ideals, nature motif."
+      },
+      {
+        id: 11,
+        artist: "Piet Mondrian",
+        title: "Composition",
+        date: "1916",
+        movement: "Neo-Plasticism (Mondrian) / Transition to De Stijl",
+        medium: "Oil on canvas, 117 x 73 cm",
+        location: "Solomon R. Guggenheim Museum, New York",
+        image: "images/11_mondrian_composition_1916.jpg",
+        notes: "Evolution from cubist 'plus and minus' pier/ocean series towards pure universal balance of vertical and horizontal forces."
+      },
+      {
+        id: 12,
+        artist: "Claude Monet",
+        title: "Impression, Sunrise (Impression, soleil levant)",
+        date: "1872 (dated 1873 / 1st Exhibition 1874)",
+        movement: "Impressionism",
+        medium: "Oil on canvas, 48 x 63 cm",
+        location: "Musée Marmottan Monet, Paris",
+        image: "images/12_monet_impression_sunrise.jpg",
+        notes: "Coined the name 'Impressionism'. Rapid sketch-like plein-air brushstrokes capturing fleeting atmospheric light of Le Havre port."
+      },
+      {
+        id: 13,
+        artist: "Joseph Maria Olbrich",
+        title: "Secession Building (Secession House)",
+        date: "1897–1898",
+        movement: "Vienna Secession",
+        medium: "Architectural building (white stucco, gilded laurel leaf dome)",
+        location: "Vienna, Austria",
+        image: "images/13_olbrich_secession_building.jpg",
+        notes: "Motto: 'To every age its art, to every art its freedom'. Golden cabbage dome, clean geometric temple of modern art."
+      },
+      {
+        id: 14,
+        artist: "Pablo Picasso",
+        title: "Les Demoiselles d'Avignon",
+        date: "1907",
+        movement: "Cubism (Proto-Cubism / African Phase)",
+        medium: "Oil on canvas, 243.9 x 233.7 cm",
+        location: "Museum of Modern Art (MoMA), New York",
+        image: "images/14_picasso_demoiselles_davignon.jpg",
+        notes: "Radical fracture of Renaissance perspective. Geometric faceted female nudes influenced by Cézanne and African tribal masks."
+      },
+      {
+        id: 15,
+        artist: "Pablo Picasso",
+        title: "Still Life with Chair Caning (Nature morte à la chaise cannée)",
+        date: "May 1912",
+        movement: "Cubism (Synthetic Cubism)",
+        medium: "Oil, oilcloth, paper, and rope on oval canvas, 29 x 37 cm",
+        location: "Musée Picasso, Paris",
+        image: "images/15_picasso_still_life_chair_caning.jpg",
+        notes: "The first modern collage / assemblage in fine art. Real printed oilcloth simulating chair caning, bound by hemp rope."
+      },
+      {
+        id: 16,
+        artist: "Vincent van Gogh",
+        title: "Wheatfield with Crows",
+        date: "July 1890",
+        movement: "Post-Impressionism",
+        medium: "Oil on canvas, 50.5 x 103 cm",
+        location: "Van Gogh Museum, Amsterdam",
+        image: "images/16_van_gogh_wheatfield_with_crows.jpg",
+        notes: "Heavy impasto, swirling divided brushwork, turbulent sky with sinister crows painted weeks before death in Auvers-sur-Oise."
+      },
+      {
+        id: 17,
+        artist: "Umberto Boccioni",
+        title: "Forces of a Street (Forze di una strada)",
+        date: "1911",
+        movement: "Italian Futurism",
+        medium: "Oil on canvas, 100 x 80 cm",
+        location: "Museum of Modern Art, Osaka",
+        image: "images/17_boccioni_forces_of_a_street.jpg",
+        notes: "Lines of force (linee di forza), electric city illumination invading the nocturnal street, dynamic collision of light and motion."
+      },
+      {
+        id: 18,
+        artist: "Umberto Boccioni",
+        title: "Unique Forms of Continuity in Space",
+        date: "1913 (cast 1931/1949)",
+        movement: "Italian Futurism",
+        medium: "Bronze sculpture, 111.2 x 88.5 x 40 cm",
+        location: "Museo del Novecento, Milan",
+        image: "images/18_boccioni_unique_forms.jpg",
+        notes: "Sculpture of motion integrating figure with surrounding aerodynamic space; striding futuristic armored muscular synthesis."
+      },
+      {
+        id: 19,
+        artist: "Marcel Duchamp",
+        title: "Nude Descending a Staircase, No. 2",
+        date: "1912",
+        movement: "The invention of the ready-made / Proto-Dada (Cubism-Futurism)",
+        medium: "Oil on canvas, 146 x 89 cm",
+        location: "Philadelphia Museum of Art",
+        image: "images/19_duchamp_nude_descending.jpg",
+        notes: "Chronophotography meets cubist facetting. Sensation and scandal of the 1913 New York Armory Show ('explosion in a shingle factory')."
+      },
+      {
+        id: 20,
+        artist: "George Grosz",
+        title: "Victim of Society (Remember Uncle August, the Unhappy Inventor)",
+        date: "1919",
+        movement: "Dada Berlin",
+        medium: "Collage, oil, and pencil on canvas, 49 x 39.5 cm",
+        location: "Centre Pompidou, Paris",
+        image: "images/20_grosz_remember_uncle_august.jpg",
+        notes: "Ferocious post-WWI Dada political satire. Mangled veteran reconstructed with clockwork, button eye, prosthetic parts, and Weimar bills."
+      },
+      {
+        id: 21,
+        artist: "Sophie Taeuber-Arp",
+        title: "Vertical-Horizontal Composition",
+        date: "c. 1917",
+        movement: "Dada (Zurich)",
+        medium: "Wool on canvas (embroidery/textile tapestry), 48 x 29.5 cm",
+        location: "Aargauer Kunsthaus Aarau (Loan)",
+        image: "images/21_taeuber_arp_vertical_horizontal.jpg",
+        notes: "Dada Zurich geometric abstraction merging high art and textile design; eliminates academic hierarchies and subjective ego."
+      }
+    ];
+
+    // Area 2: The 17 Terms from Study Guide with precise definitions (50-100 words exam ready)
+    const termsData = [
+      {
+        id: "term1",
+        name: "Abstraction",
+        definition: "Art that does not attempt to represent an accurate depiction of visual reality, instead using shapes, colors, forms, and gestural marks to achieve its effect. Pioneered in the early 1910s by Kandinsky (spiritual/lyrical), Mondrian (geometric De Stijl), and Malevich (Suprematist pure feeling)."
+      },
+      {
+        id: "term2",
+        name: "Arts and Crafts",
+        definition: "A reformist international decorative arts movement founded in late 19th-century Britain by William Morris and John Ruskin. It fought against degraded industrial mass production by reviving medieval craftsmanship, honest materials, and integrating decorative arts with architecture."
+      },
+      {
+        id: "term3",
+        name: "Bow window",
+        definition: "A curved, protruding bay window cantilevered out from an exterior facade to admit extra daylight and provide panoramic street views. Extensively utilized in Art Nouveau and Secession architecture (e.g., Victor Horta, Hector Guimard) to enhance structural dynamism."
+      },
+      {
+        id: "term4",
+        name: "Collage",
+        definition: "An artistic technique originated by Picasso and Braque in Synthetic Cubism (1912 with 'Still Life with Chair Caning') in which real-world manufactured materials (newspapers, oilcloth, tickets) are pasted onto a flat support, subverting traditional illusionistic pictorial space."
+      },
+      {
+        id: "term5",
+        name: "Concrete",
+        definition: "A composite building material of cement, water, and aggregates, often reinforced with iron/steel mesh (reinforced concrete/béton armé). Championed by modern architects (e.g., Gaudí in hydraulic cement tiles, Perret, Le Corbusier) to enable freeform, curvilinear, and soaring cantilevers."
+      },
+      {
+        id: "term6",
+        name: "Contrasting color theory",
+        definition: "Scientifically formulated by chemist Michel Eugène Chevreul (1839 Law of Simultaneous Contrast of Colors). It dictates that adjacent complementary colors (red/green, blue/orange, yellow/violet) intensify one another's vibrance and luminosity, heavily exploited by Impressionists and Post-Impressionists."
+      },
+      {
+        id: "term7",
+        name: "Divided brushstroke",
+        definition: "The application of small, separate strokes or dots of pure, unmixed pigment directly onto the canvas side by side. Rather than mixing pigments on the palette, optical color mixing occurs in the viewer's retina, maximizing luminosity as seen in Impressionism and Seurat's Pointillism."
+      },
+      {
+        id: "term8",
+        name: "Fourth dimension",
+        definition: "A spatial concept drawn from non-Euclidean geometry and physics (hypercube, time-space) that fascinated Cubists, Futurists, and Duchamp. Artists sought to depict multi-angled simultaneity, dynamic movement, and higher spiritual realms beyond static three-dimensional perspective."
+      },
+      {
+        id: "term9",
+        name: "Impasto",
+        definition: "A painting technique where paint is laid thickly on the canvas in prominent, tactile quantities, leaving visible the marks of the brush or palette knife (e.g., Van Gogh's expressive 'Wheatfield with Crows' and Cézanne's structural tactile surfaces)."
+      },
+      {
+        id: "term10",
+        name: "Non-local color",
+        definition: "The arbitrary use of color that has no realistic or descriptive connection to the natural appearance of the subject (such as green hair or a blood-red field). Pioneered by Gauguin ('Vision After the Sermon') and radicalized by Matisse and the Fauves in 1905."
+      },
+      {
+        id: "term11",
+        name: "Proun",
+        definition: "An acronym coined by El Lissitzky meaning 'Project for the Affirmation of the New' (Pro-unovis). These were experimental two- and three-dimensional spatial constructions serving as interchangeable transition stations between flat Suprematist painting and utilitarian architecture."
+      },
+      {
+        id: "term12",
+        name: "Secession",
+        definition: "The breakaway of progressive avant-garde artists from conservative state academic institutions, most famously the Vienna Secession founded in 1897 by Gustav Klimt, Josef Hoffmann, and Joseph Maria Olbrich to foster total art, international exhibitions, and craft unification."
+      },
+      {
+        id: "term13",
+        name: "World Fair 1900",
+        definition: "The monumental Exposition Universelle held in Paris celebrating the dawn of the 20th century. It served as the triumph and international showcase of Art Nouveau (Guimard's Métro stations, Bing's pavilion), electricity, cinema, and industrial modernity."
+      },
+      {
+        id: "term14",
+        name: "Woodblock print",
+        definition: "A relief printing technique where text or images are carved onto wooden blocks. Japanese ukiyo-e prints greatly influenced Impressionism and Post-Impressionism, while German Expressionists (Kandinsky's 'Der Blaue Reiter' cover, Kirchner) revived coarse woodcuts for raw emotional vigor."
+      },
+      {
+        id: "term15",
+        name: "Avant-garde",
+        definition: "Originally a French military term for the vanguard scout troops, applied in modern art to radical, pioneering artists and movements who pushed boundaries, disrupted conventions, and anticipated future aesthetic and socio-political transformations."
+      },
+      {
+        id: "term16",
+        name: "Intonarumori",
+        definition: "A group of acoustic noise-generating instruments invented in 1913 by Italian Futurist Luigi Russolo and Ugo Piatti. They generated machine-age industrial sounds (howling, crackling, humming) as heralded in Russolo's manifesto 'The Art of Noises' (L'arte dei rumori)."
+      },
+      {
+        id: "term17",
+        name: "Ready-made",
+        definition: "An ordinary, mass-manufactured, utilitarian object selected and elevated to the status of art by the artist's conceptual choice rather than handcraft. Pioneered in 1913–1917 by Marcel Duchamp with 'Bicycle Wheel', 'Bottle Rack', and 'Fountain' (R. Mutt)."
+      }
+    ];
+
+    // Area 3: The 12 Movements for the 400-word essay option with class visual examples
+    const movementsData = [
+      {
+        id: "m1",
+        name: "1) Art Nouveau in France and Belgium",
+        dates: "1890–1914",
+        formalChars: "Organic undulating 'whiplash' lines, asymmetry, nature-inspired motifs (dragonflies, tendrils, water lilies), total work of art (Gesamtkunstwerk) synthesizing architecture, interior, and furniture.",
+        datesFacts: "Born in Brussels with Victor Horta's Hôtel Tassel (1893) and spread to Paris with Hector Guimard's Castel Béranger (1898) and iconic 1900 Paris Métro station entrances. Triumphant at the 1900 Paris World Fair.",
+        examples: [
+          {
+            artist: "Hector Guimard",
+            title: "A Smoking Room Sofa (Banquette de fumoir)",
+            date: "1897",
+            medium: "Carved pear wood and upholstery, Musée d'Orsay",
+            img: "images/4_guimard_smoking_room_sofa.jpg",
+            analysis: "Demonstrates dynamic continuous whiplash curves, integrating asymmetric structural shelving and seating into an organic whole."
+          },
+          {
+            artist: "Victor Horta",
+            title: "Hôtel Tassel (Entry Hall & Staircase)",
+            date: "1893",
+            medium: "Exposed iron columns, painted murals, mosaic floor",
+            img: "images/extra_horta_tassel_house.jpg",
+            analysis: "Celebrates slender exposed cast-iron structural stems seamlessly flowering into sinuous painted tendrils on the walls and curved mosaic floor."
+          }
+        ]
+      },
+      {
+        id: "m2",
+        name: "2) Catalan Modernism (Modernisme)",
+        dates: "1888–1911",
+        formalChars: "Biomorphic curvilinear architecture, structural vaults, parabolic arches, organic skeletal forms, and colorful 'trencadís' mosaic made from broken glazed ceramic tiles and glass.",
+        datesFacts: "Flourished in Catalonia/Barcelona as an architectural and cultural renaissance driven by Antoni Gaudí and Lluís Domènech i Montaner. Celebrated Catalan national identity and craftsmanship.",
+        examples: [
+          {
+            artist: "Antoni Gaudí",
+            title: "Casa Batlló (Façade)",
+            date: "1906",
+            medium: "Sculpted stone, glass, trencadís ceramic, forged iron",
+            img: "images/2_gaudi_casa_batllo.jpg",
+            analysis: "Skeletal bone-shaped stone columns on lower floors, iridescent ceramic skin, and wavy dragon-back spine on the roofline evoking Saint George."
+          },
+          {
+            artist: "Antoni Gaudí",
+            title: "Casa Batlló (Dragon Roof & Chimneys)",
+            date: "1906",
+            medium: "Glazed ceramic tile scales, mosaic, sculpted chimneys",
+            img: "images/extra_gaudi_casa_batllo_roof.jpg",
+            analysis: "Architectural functional chimneys transformed into colorful surreal sculptural sentinels; completely eliminates right angles in favor of living organic forms."
+          }
+        ]
+      },
+      {
+        id: "m3",
+        name: "3) Vienna Secession",
+        dates: "Founded 1897 (Exhibition building 1898)",
+        formalChars: "Geometric simplification, rectilinear grid lines balanced with rich flat ornamental gold/silver patterns, floral motifs, and a total synthesis of fine and applied arts (Wiener Werkstätte).",
+        datesFacts: "Founded in April 1897 when Gustav Klimt, Josef Hoffmann, Koloman Moser, and J.M. Olbrich broke away from the conservative Vienna Künstlerhaus. Published their official magazine 'Ver Sacrum' ('Sacred Spring').",
+        examples: [
+          {
+            artist: "Joseph Maria Olbrich",
+            title: "Secession Building (Exhibition Pavilion)",
+            date: "1897–1898",
+            medium: "White stucco, gilded wrought-iron laurel dome",
+            img: "images/13_olbrich_secession_building.jpg",
+            analysis: "Geometric purity and cubical masses crowned with a golden openwork laurel dome; features the motto 'To every age its art, to every art its freedom'."
+          },
+          {
+            artist: "Gustav Klimt",
+            title: "Portrait of Adele Bloch-Bauer I",
+            date: "1907",
+            medium: "Oil, gold, and silver on canvas, 138 x 138 cm",
+            img: "images/8_klimt_adele_bloch_bauer.jpg",
+            analysis: "Exemplifies Klimt's Golden Phase with Byzantine mosaic flatness; realistic sensual face and hands emerging from an abstract tapestry of gilded Egyptian eye patterns."
+          }
+        ]
+      },
+      {
+        id: "m4",
+        name: "4) Post-Impressionism (Cézanne, Gauguin, Van Gogh)",
+        dates: "c. 1886–1905",
+        formalChars: "Rejection of the purely passive, objective optical recording of Impressionism in favor of emotional expression, heavy impasto, structural geometries, flat non-local colors, and symbolic meaning.",
+        datesFacts: "Term coined retrospectively in 1910 by British art critic Roger Fry for his Grafton Galleries exhibition. Sparked by Seurat's 1886 Grande Jatte and led separately by Cézanne, Gauguin, and Van Gogh.",
+        examples: [
+          {
+            artist: "Paul Cézanne",
+            title: "The Plate of Apples",
+            date: "c. 1877",
+            medium: "Oil on canvas, Art Institute of Chicago",
+            img: "images/1_cezanne_plate_of_apples.jpg",
+            analysis: "Treats nature through cylinder, sphere, and cone; uses modulated planar strokes and multiple shifting vantage points to reconstruct enduring solid structure."
+          },
+          {
+            artist: "Vincent van Gogh",
+            title: "Wheatfield with Crows",
+            date: "1890",
+            medium: "Oil on canvas, Van Gogh Museum, Amsterdam",
+            img: "images/16_van_gogh_wheatfield_with_crows.jpg",
+            analysis: "Thick agitated impasto brushstrokes, violent contrast between golden yellow wheat and ominous Prussian blue sky, conveying profound emotional turmoil."
+          }
+        ]
+      },
+      {
+        id: "m5",
+        name: "5) Cubism",
+        dates: "1908–1920s (Analytical: 1909-12, Synthetic: 1912+)",
+        formalChars: "Deconstruction of traditional Renaissance one-point perspective; simultaneous multiple viewpoints, fragmentation into geometric facets, monochromatic palette (Analytical), and real-world collage materials (Synthetic).",
+        datesFacts: "Founded in Paris by Pablo Picasso and Georges Braque in close dialogue with Cézanne's legacy and African sculpture. Initiated by 'Les Demoiselles d'Avignon' (1907) and Kahnweiler's gallery exhibitions.",
+        examples: [
+          {
+            artist: "Pablo Picasso",
+            title: "Les Demoiselles d'Avignon",
+            date: "1907",
+            medium: "Oil on canvas, MoMA, New York",
+            img: "images/14_picasso_demoiselles_davignon.jpg",
+            analysis: "Proto-cubist landmark fracturing five female figures into jagged planes; incorporates African tribal mask faces and aggressive non-illusionistic space."
+          },
+          {
+            artist: "Pablo Picasso",
+            title: "Still Life with Chair Caning",
+            date: "1912",
+            medium: "Oil, oilcloth, and rope on oval canvas, Musée Picasso",
+            img: "images/15_picasso_still_life_chair_caning.jpg",
+            analysis: "First synthetic cubist collage incorporating industrial printed oilcloth and real rope frame, challenging the boundary between illusion and reality."
+          }
+        ]
+      },
+      {
+        id: "m6",
+        name: "6) Italian Futurism",
+        dates: "1909–1916 (First wave)",
+        formalChars: "Lines of force ('linee di forza'), simultaneity, depiction of speed, industrial noise, kinetic velocity, chronological blur, and violent rejection of past traditions (passéisme).",
+        datesFacts: "Launched in February 1909 on the front page of Paris's 'Le Figaro' by poet F.T. Marinetti. Glorified speed, the automobile, modern technology, and war. Expanded into music (Russolo), sculpture (Boccioni), and fashion.",
+        examples: [
+          {
+            artist: "Umberto Boccioni",
+            title: "Forces of a Street (Forze di una strada)",
+            date: "1911",
+            medium: "Oil on canvas, Osaka Museum of Modern Art",
+            img: "images/17_boccioni_forces_of_a_street.jpg",
+            analysis: "Shows the nocturnal modern city electrified; piercing diagonal light rays and kinetic movement sweep buildings and trams into dynamic interpenetration."
+          },
+          {
+            artist: "Umberto Boccioni",
+            title: "Unique Forms of Continuity in Space",
+            date: "1913",
+            medium: "Bronze sculpture, Museo del Novecento, Milan",
+            img: "images/18_boccioni_unique_forms.jpg",
+            analysis: "Translates kinetic velocity into bronze; the striding figure dissolves into sweeping aerodynamic flame-like planes merging with surrounding space."
+          }
+        ]
+      },
+      {
+        id: "m7",
+        name: "7) Dada Berlin",
+        dates: "1918–1923",
+        formalChars: "Photomontage, biting political satire, assemblage of mechanical scrap parts, aggressive anti-militarism, and nihilistic deconstruction of Weimar bourgeois authority.",
+        datesFacts: "Formed in 1918 by Richard Huelsenbeck, Raoul Hausmann, George Grosz, John Heartfield, and Hannah Höch following the trauma of WWI. Climaxed with the famous 1920 'First International Dada Fair' (Dada-Messe).",
+        examples: [
+          {
+            artist: "George Grosz",
+            title: "Victim of Society (Remember Uncle August, the Unhappy Inventor)",
+            date: "1919",
+            medium: "Collage, oil, and pencil on canvas, Centre Pompidou",
+            img: "images/20_grosz_remember_uncle_august.jpg",
+            analysis: "Visceral satire on wounded veterans; a brain exposed with clockwork wheels, mechanical prosthetics, and German marks pasted onto a dehumanized portrait."
+          },
+          {
+            artist: "John Heartfield & Rudolf Schlichter",
+            title: "Prussian Officer with Pig's Head (Dada-Messe)",
+            date: "1920",
+            medium: "Sculptural assemblage suspended from the ceiling",
+            img: "images/extra_dada_berlin_prussian_officer.jpg",
+            analysis: "Exhibited at the 1920 Dada Fair; directly attacked German militarism and imperial army brutality, resulting in criminal defamation prosecution."
+          }
+        ]
+      },
+      {
+        id: "m8",
+        name: "8) Der Blaue Reiter (The Blue Rider, expressionism)",
+        dates: "1911–1914",
+        formalChars: "Lyrical spiritual abstraction, expressive symbolic non-local colors, cosmic synesthesia (associating color with musical tones), and synthesis of medieval folk art and modern form.",
+        datesFacts: "Founded in Munich in late 1911 by Wassily Kandinsky and Franz Marc. Published the landmark 1912 'Der Blaue Reiter Almanac' before the group was dispersed by the outbreak of World War I.",
+        examples: [
+          {
+            artist: "Wassily Kandinsky",
+            title: "Cover of Der Blaue Reiter (Almanac)",
+            date: "1912",
+            medium: "Color woodblock engraving, Bibliothèque nationale",
+            img: "images/5b_kandinsky_der_blaue_reiter_cover.jpg",
+            analysis: "Depicts the Blue Rider (Saint George) charging forward on horseback, embodying the crusade of spiritual revelation against corrupt materialism."
+          },
+          {
+            artist: "Wassily Kandinsky",
+            title: "Composition VI",
+            date: "1913",
+            medium: "Oil on canvas, Hermitage Museum",
+            img: "images/7_kandinsky_composition_vi.jpg",
+            analysis: "Sublimates the apocalyptic biblical Deluge/Flood into an explosive symphony of colors and free vectors, achieving musical emotional vibration."
+          }
+        ]
+      },
+      {
+        id: "m9",
+        name: "9) Neo-Plasticism (Mondrian / De Stijl)",
+        dates: "1917–1931",
+        formalChars: "Strict reduction to the essentials of form and color: only straight vertical and horizontal black lines intersecting at 90-degree right angles, three primary colors (red, blue, yellow), and three non-colors (white, gray, black).",
+        datesFacts: "Founded in the Netherlands in 1917 by Piet Mondrian and Theo van Doesburg with the magazine 'De Stijl'. Guided by Theosophical ideals of M.H.J. Schoenmaekers seeking universal cosmic harmony.",
+        examples: [
+          {
+            artist: "Piet Mondrian",
+            title: "Composition (1916)",
+            date: "1916",
+            medium: "Oil on canvas, Solomon R. Guggenheim Museum",
+            img: "images/11_mondrian_composition_1916.jpg",
+            analysis: "Critical transitional phase displaying floating planar rectangular color blocks anchored by delicate black line segments before total grid purification."
+          },
+          {
+            artist: "Piet Mondrian",
+            title: "Composition with Blue, Red, Yellow and Black",
+            date: "1922",
+            medium: "Oil on canvas, Minneapolis Institute of Art",
+            img: "images/extra_mondrian_composition_1922.jpg",
+            analysis: "Pure mature Neo-Plasticism. Asymmetric dynamic equilibrium where primary color fields counterbalance thick black perpendicular grid lines."
+          }
+        ]
+      },
+      {
+        id: "m10",
+        name: "10) Suprematism (Malevich)",
+        dates: "1913/1915–1920s",
+        formalChars: "The supremacy of pure feeling in creative art; radical non-objective geometric vocabulary (squares, circles, crosses, floating rectangular planes) on flat white infinite grounds.",
+        datesFacts: "Launched publicly in December 1915 at the 'Last Futurist Exhibition of Painting 0.10' in Petrograd by Kazimir Malevich. Rooted in the 1913 futurist opera 'Victory Over the Sun'.",
+        examples: [
+          {
+            artist: "Kazimir Malevich",
+            title: "Black Square",
+            date: "1915 (dated 1913)",
+            medium: "Oil on canvas, Tretyakov Gallery / Russian Museum",
+            img: "images/10a_malevich_black_square.jpg",
+            analysis: "The 'zero of form' that liquidated depiction of real objects; hung in the high corner ('krasny ugol') of the 0.10 exhibition like a modern sacred icon."
+          },
+          {
+            artist: "Kazimir Malevich",
+            title: "Airplane Flying (Suprematist Composition)",
+            date: "1915",
+            medium: "Oil on canvas, MoMA, New York",
+            img: "images/extra_malevich_airplane_flying.jpg",
+            analysis: "Interlocking colored rectangular bands floating weightlessly in cosmic white space, evoking modern aerodynamic flight without copying an airplane."
+          }
+        ]
+      },
+      {
+        id: "m11",
+        name: "11) The Invention of the Ready-made (Marcel Duchamp & Dada NY)",
+        dates: "1913–1917",
+        formalChars: "De-skilling of art; rejection of 'retinal art' (art appealing merely to the eye) in favor of intellectual concept; choice, displacement of utilitarian objects into gallery spaces, and provocative inscriptions.",
+        datesFacts: "Developed by Marcel Duchamp in Paris and New York (1913 'Bicycle Wheel', 1914 'Bottle Rack'). Culminated in the submission of 'Fountain' signed 'R. Mutt 1917' to the Society of Independent Artists.",
+        examples: [
+          {
+            artist: "Marcel Duchamp",
+            title: "Fountain",
+            date: "1917",
+            medium: "Porcelain urinal turned 90 degrees, signed 'R. Mutt 1917'",
+            img: "images/extra_duchamp_fountain.jpg",
+            analysis: "Photograph by Alfred Stieglitz; asserted that whether Mr. Mutt made it with his own hands is irrelevant: he CHOSE it, creating a new thought for that object."
+          },
+          {
+            artist: "Marcel Duchamp",
+            title: "Bicycle Wheel",
+            date: "1913 (assisted ready-made)",
+            medium: "Bicycle wheel inverted and mounted on a kitchen stool",
+            img: "images/extra_duchamp_bicycle_wheel.jpg",
+            analysis: "The earliest assisted ready-made, combining two manufactured functional objects into a kinetic useless sculpture that subverts the notion of artistic craft."
+          }
+        ]
+      },
+      {
+        id: "m12",
+        name: "12) The Invention of Abstraction (Kandinsky, Mondrian, Malevich)",
+        dates: "c. 1910–1920",
+        formalChars: "Complete liberation from optical imitation of physical nature. Three distinct branches: Spiritual/Lyrical (Kandinsky), Philosophical/Geometric equilibrium (Mondrian), and Cosmic/Non-objective feeling (Malevich).",
+        datesFacts: "Simultaneously developed across Munich/Russia (Kandinsky 1910-13), the Netherlands (Mondrian 1914-17), and Russia (Malevich 1913-15), sparked by non-Euclidean geometry, Theosophy, and the crisis of WWI.",
+        examples: [
+          {
+            artist: "Wassily Kandinsky",
+            title: "Composition VI",
+            date: "1913",
+            medium: "Oil on canvas, Hermitage Museum",
+            img: "images/7_kandinsky_composition_vi.jpg",
+            analysis: "Exemplifies lyrical abstraction; eliminates recognizable objects to evoke direct spiritual vibrations, viewing colors as musical timbres."
+          },
+          {
+            artist: "Kazimir Malevich",
+            title: "Black Square",
+            date: "1915",
+            medium: "Oil on canvas, Russian Museum",
+            img: "images/10a_malevich_black_square.jpg",
+            analysis: "Exemplifies geometric absolute abstraction; reduces painting to a singular non-representational square, freeing art from the burden of the object."
+          }
+        ]
+      }
+    ];
+
+
+    // ------------------- CONTROLLERS & RENDERING -------------------
+
+    function switchArea(areaId) {
+      document.querySelectorAll('.area-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(areaId).classList.add('active');
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(areaId));
+      if (activeBtn) activeBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- AREA 1: FLASHCARDS ---
+    function renderFlashcards(list) {
+      const grid = document.getElementById('flashcardsGrid');
+      grid.innerHTML = '';
+
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card-container';
+        card.id = `card-${item.id}`;
+        card.onclick = () => card.classList.toggle('flipped');
+
+        card.innerHTML = `
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="card-img-wrap">
+                <img src="${item.image}" alt="${item.title}" onerror="this.src='https://placehold.co/600x400/222/aaa?text=Artwork+Image'">
+              </div>
+              <div class="card-front-footer">
+                <span class="card-num">#${item.id}</span>
+                <span class="card-hint">Click to flip info ↺</span>
+              </div>
+            </div>
+
+            <div class="card-back">
+              <span class="badge-movement">${item.movement}</span>
+              <h3>${item.title}</h3>
+              
+              <div class="detail-row">
+                <span class="detail-label">Artist</span>
+                <span class="detail-val">${item.artist}</span>
+              </div>
+
+              <div class="detail-row">
+                <span class="detail-label">Date</span>
+                <span class="detail-val">${item.date}</span>
+              </div>
+
+              <div class="detail-row">
+                <span class="detail-label">Medium & Dimensions</span>
+                <span class="detail-val" style="font-size: 0.85rem;">${item.medium}</span>
+              </div>
+
+              <div class="detail-row">
+                <span class="detail-label">Location / Collection</span>
+                <span class="detail-val" style="font-size: 0.85rem;">${item.location}</span>
+              </div>
+
+              <div class="detail-row" style="margin-top: 8px;">
+                <span class="detail-label">Key Exam Analysis</span>
+                <span class="detail-val" style="font-size: 0.8rem; color: #cbd5e1; font-weight: normal;">${item.notes}</span>
+              </div>
+
+              <div class="flip-back-prompt">Click to flip back to image ↺</div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterFlashcards() {
+      const filter = document.getElementById('movementFilter').value;
+      if (filter === 'all') {
+        renderFlashcards(artworksData);
+      } else {
+        const filtered = artworksData.filter(a => a.movement.toLowerCase().includes(filter.toLowerCase()));
+        renderFlashcards(filtered);
+      }
+    }
+
+    function flipAll(state) {
+      document.querySelectorAll('.card-container').forEach(c => {
+        if (state) c.classList.add('flipped');
+        else c.classList.remove('flipped');
+      });
+    }
+
+    function shuffleFlashcards() {
+      const shuffled = [...artworksData].sort(() => Math.random() - 0.5);
+      renderFlashcards(shuffled);
+    }
+
+
+    // --- AREA 2: TERMS MATCHING GAME ---
+    let selectedTermId = null;
+    let termMatches = {}; // { termCardId: matchedTermName }
+    let attemptsCount = 0;
+    let correctCount = 0;
+
+    function initTermsGame() {
+      termMatches = {};
+      selectedTermId = null;
+      attemptsCount = 0;
+      correctCount = 0;
+
+      // Render bank chips in random order
+      const chipsContainer = document.getElementById('bankChips');
+      chipsContainer.innerHTML = '';
+      const shuffledTerms = [...termsData].sort(() => Math.random() - 0.5);
+
+      shuffledTerms.forEach(t => {
+        const chip = document.createElement('div');
+        chip.className = 'term-chip';
+        chip.id = `chip-${t.id}`;
+        chip.innerText = t.name;
+        chip.onclick = () => selectTerm(t.id, chip);
+        chipsContainer.appendChild(chip);
+      });
+
+      // Render definitions in random order
+      const defList = document.getElementById('definitionsList');
+      defList.innerHTML = '';
+      const shuffledDefs = [...termsData].sort(() => Math.random() - 0.5);
+
+      shuffledDefs.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'term-card';
+        row.id = `def-row-${t.id}`;
+
+        row.innerHTML = `
+          <div class="term-dropzone" id="drop-${t.id}" onclick="placeSelectedTerm('${t.id}')">
+            <span style="color: #64748b;">[ Click to place term ]</span>
+          </div>
+          <div class="term-def-text">
+            ${t.definition}
+          </div>
+          <div class="term-status-icon" id="status-${t.id}">⚪</div>
+        `;
+        defList.appendChild(row);
+      });
+
+      updateScoreboard();
+      updateSelectedDisplay();
+    }
+
+    function selectTerm(termId, chipElement) {
+      if (chipElement.classList.contains('used')) return;
+
+      document.querySelectorAll('.term-chip').forEach(c => c.classList.remove('selected'));
+      
+      if (selectedTermId === termId) {
+        selectedTermId = null;
+      } else {
+        selectedTermId = termId;
+        chipElement.classList.add('selected');
+      }
+      updateSelectedDisplay();
+    }
+
+    function updateSelectedDisplay() {
+      const disp = document.getElementById('selectedTermDisplay');
+      if (selectedTermId) {
+        const term = termsData.find(t => t.id === selectedTermId);
+        disp.innerText = `Selected: "${term.name}" → Click matching box below!`;
+        disp.style.color = '#38bdf8';
+        disp.style.fontWeight = 'bold';
+      } else {
+        disp.innerText = 'No term selected';
+        disp.style.color = '#94a3b8';
+        disp.style.fontWeight = 'normal';
+      }
+    }
+
+    function placeSelectedTerm(targetDefId) {
+      if (!selectedTermId) {
+        alert("Please select a term chip from the bank above first!");
+        return;
+      }
+
+      const selectedTerm = termsData.find(t => t.id === selectedTermId);
+      const dropzone = document.getElementById(`drop-${targetDefId}`);
+      const row = document.getElementById(`def-row-${targetDefId}`);
+      const statusIcon = document.getElementById(`status-${targetDefId}`);
+      const chip = document.getElementById(`chip-${selectedTermId}`);
+
+      attemptsCount++;
+
+      if (selectedTermId === targetDefId) {
+        // Correct
+        correctCount++;
+        dropzone.className = 'term-dropzone filled';
+        dropzone.innerHTML = `<span style="color: #22c55e; font-weight: 700;">✓ ${selectedTerm.name}</span>`;
+        row.className = 'term-card correct';
+        statusIcon.innerHTML = '🟢';
+        chip.classList.add('used');
+        chip.classList.remove('selected');
+        selectedTermId = null;
+      } else {
+        // Wrong
+        row.className = 'term-card wrong';
+        statusIcon.innerHTML = '🔴';
+        dropzone.innerHTML = `<span style="color: #ef4444; font-size: 0.85rem;">Try Again!</span>`;
+        setTimeout(() => {
+          row.classList.remove('wrong');
+          statusIcon.innerHTML = '⚪';
+          dropzone.innerHTML = `<span style="color: #64748b;">[ Click to place term ]</span>`;
+        }, 1200);
+      }
+
+      updateScoreboard();
+      updateSelectedDisplay();
+    }
+
+    function updateScoreboard() {
+      document.getElementById('statCompleted').innerText = `${correctCount} / ${termsData.length}`;
+      const acc = attemptsCount === 0 ? 100 : Math.round((correctCount / attemptsCount) * 100);
+      document.getElementById('statScore').innerText = `${acc}%`;
+    }
+
+    function resetTermsGame() {
+      initTermsGame();
+    }
+
+    function revealAllTerms() {
+      termsData.forEach(t => {
+        const dropzone = document.getElementById(`drop-${t.id}`);
+        const row = document.getElementById(`def-row-${t.id}`);
+        const statusIcon = document.getElementById(`status-${t.id}`);
+        const chip = document.getElementById(`chip-${t.id}`);
+
+        dropzone.className = 'term-dropzone filled';
+        dropzone.innerHTML = `<span style="color: #22c55e; font-weight: 700;">✓ ${t.name}</span>`;
+        row.className = 'term-card correct';
+        statusIcon.innerHTML = '🟢';
+        if (chip) chip.classList.add('used');
+      });
+      correctCount = termsData.length;
+      attemptsCount = termsData.length;
+      selectedTermId = null;
+      updateScoreboard();
+      updateSelectedDisplay();
+    }
+
+    // --- AREA 3: STYLES & VISUAL EXAMPLES ---
+    function renderMovements() {
+      const container = document.getElementById('periodsContainer');
+      container.innerHTML = '';
+
+      movementsData.forEach((m, idx) => {
+        const card = document.createElement('div');
+        card.className = 'period-card';
+        card.id = m.id;
+
+        const longMovementObj = (typeof area3WholeText !== 'undefined')
+          ? area3WholeText.find(item => item.id === m.id) || area3WholeText[idx]
+          : null;
+        const fullParagraphEssay = longMovementObj ? longMovementObj.essayText : `${m.name}. ${m.datesFacts} ${m.formalChars}`;
+
+        const examplesHtml = m.examples.map(ex => `
+          <div class="visual-example-card">
+            <div class="example-img-wrap">
+              <img src="${ex.img}" alt="${ex.title}" onerror="this.src='https://placehold.co/600x400/222/aaa?text=${encodeURIComponent(ex.title)}'">
+            </div>
+            <div class="example-caption">
+              <div>
+                <h5>${ex.artist} &bull; <em>${ex.title}</em></h5>
+                <div class="example-meta">${ex.date} &bull; ${ex.medium}</div>
+              </div>
+              <div class="example-formal-analysis">
+                <strong>Class Visual Analysis:</strong> ${ex.analysis}
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="period-header">
+            <div class="period-title">${m.name}</div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button class="btn-tts-ctrl" onclick="speakSpecificItem('area3', ${idx})" style="border-color: var(--accent); color: var(--accent);">
+                🔊 Turn On Voice for This Style
+              </button>
+              <span class="period-dates">${m.dates}</span>
+            </div>
+          </div>
+
+          <div class="period-body">
+            <div class="essay-prep-box" style="border-left-color: var(--accent); margin-bottom: 18px;">
+              <h4 style="color: var(--accent); justify-content: space-between;">
+                <span>📖 Full Exam Essay Narrative (~350–400 Words Whole Text)</span>
+                <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: normal;">Covers Dates, Formal Characteristics, 2 Class Examples & Terms</span>
+              </h4>
+              <p style="font-size: 0.98rem; line-height: 1.75; color: #e2e8f0; margin-top: 8px;">
+                ${fullParagraphEssay}
+              </p>
+            </div>
+
+            <div class="essay-prep-box">
+              <h4>📝 Quick Rubric Breakdown (Slavkova 40-Point Rubric)</h4>
+              <div class="essay-grid">
+                <div>
+                  <div class="essay-point-title">1. Formal Characteristics (10 pts)</div>
+                  <div class="essay-point-desc">${m.formalChars}</div>
+                </div>
+                <div>
+                  <div class="essay-point-title">2. Historical Dates & Facts (10 pts)</div>
+                  <div class="essay-point-desc">${m.datesFacts}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="visual-examples-heading">Two Concrete Visual Examples Studied in Class (10 pts)</div>
+            <div class="visual-examples-grid">
+              ${examplesHtml}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ------------------- FREE TEXT-TO-SPEECH & CAR AUDIO ENGINE -------------------
+    let currentTtsArea = null;     // 'area2' or 'area3'
+    let currentTtsIndex = 0;       // index in area2WholeText or area3WholeText
+    let isTtsSpeaking = false;
+    let isTtsPaused = false;
+    let ttsSpeed = 1.0;
+    let selectedVoiceURI = '';
+    let availableVoices = [];
+
+    function renderWholeTextPanels() {
+      // Render Area 2 continuous whole text
+      const box2 = document.getElementById('area2WholeTextContainer');
+      if (box2 && typeof area2WholeText !== 'undefined') {
+        box2.innerHTML = area2WholeText.map((item, idx) => `
+          <div class="whole-text-paragraph" id="para-area2-${idx}" onclick="speakSpecificItem('area2', ${idx})">
+            <h4>
+              <span>${item.num}) ${item.name}</span>
+              <span class="play-para-badge" id="badge-area2-${idx}">🔊 Click to Speak</span>
+            </h4>
+            <p>${item.text}</p>
+          </div>
+        `).join('');
+      }
+
+      // Render Area 3 continuous whole text
+      const box3 = document.getElementById('area3WholeTextContainer');
+      if (box3 && typeof area3WholeText !== 'undefined') {
+        box3.innerHTML = area3WholeText.map((item, idx) => `
+          <div class="whole-text-paragraph" id="para-area3-${idx}" onclick="speakSpecificItem('area3', ${idx})">
+            <h4>
+              <span>${item.name}</span>
+              <span class="play-para-badge" id="badge-area3-${idx}">🔊 Click to Speak</span>
+            </h4>
+            <p>${item.essayText}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function populateVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || voices.length === 0) return;
+
+      // Prefer natural/neural English voices
+      availableVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+      if (availableVoices.length === 0) availableVoices = voices;
+
+      // Sort Natural / Online / Google / Microsoft voices first
+      availableVoices.sort((a, b) => {
+        const score = v => (v.name.includes('Natural') || v.name.includes('Online') || v.name.includes('Google') ? 2 : v.default ? 1 : 0);
+        return score(b) - score(a);
+      });
+
+      ['ttsVoiceSelect2', 'ttsVoiceSelect3'].forEach(selId => {
+        const sel = document.getElementById(selId);
+        if (!sel) return;
+        const currentVal = sel.value || selectedVoiceURI;
+        sel.innerHTML = availableVoices.map(v =>
+          `<option value="${v.voiceURI}">${v.name} (${v.lang})</option>`
+        ).join('');
+        if (currentVal) sel.value = currentVal;
+      });
+
+      if (!selectedVoiceURI && availableVoices.length > 0) {
+        selectedVoiceURI = availableVoices[0].voiceURI;
+      }
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = populateVoices;
+    }
+
+    function changeTtsSpeed(val) {
+      ttsSpeed = parseFloat(val) || 1.0;
+      const s2 = document.getElementById('ttsSpeedArea2');
+      const s3 = document.getElementById('ttsSpeedArea3');
+      if (s2) s2.value = val;
+      if (s3) s3.value = val;
+      if (isTtsSpeaking && currentTtsArea) {
+        speakItemAtIndex(currentTtsArea, currentTtsIndex);
+      }
+    }
+
+    function changeTtsVoice(uri) {
+      selectedVoiceURI = uri;
+      const v2 = document.getElementById('ttsVoiceSelect2');
+      const v3 = document.getElementById('ttsVoiceSelect3');
+      if (v2) v2.value = uri;
+      if (v3) v3.value = uri;
+      if (isTtsSpeaking && currentTtsArea) {
+        speakItemAtIndex(currentTtsArea, currentTtsIndex);
+      }
+    }
+
+    function toggleAreaSpeech(area) {
+      if (isTtsSpeaking && currentTtsArea === area) {
+        stopAllSpeech();
+      } else {
+        speakItemAtIndex(area, 0);
+      }
+    }
+
+    function speakSpecificItem(area, index) {
+      speakItemAtIndex(area, index);
+    }
+
+    function stepSpeech(area, delta) {
+      const list = area === 'area2' ? area2WholeText : area3WholeText;
+      if (!list) return;
+      let nextIdx = (currentTtsArea === area ? currentTtsIndex : 0) + delta;
+      if (nextIdx < 0) nextIdx = 0;
+      if (nextIdx >= list.length) nextIdx = list.length - 1;
+      speakItemAtIndex(area, nextIdx);
+    }
+
+    function pauseResumeSpeech() {
+      if (!('speechSynthesis' in window)) return;
+      if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          isTtsPaused = false;
+          updateTtsUi();
+        } else {
+          window.speechSynthesis.pause();
+          isTtsPaused = true;
+          updateTtsUi();
+        }
+      }
+    }
+
+    function stopAllSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      isTtsSpeaking = false;
+      isTtsPaused = false;
+      clearReadingHighlights();
+      updateTtsUi();
+    }
+
+    function clearReadingHighlights() {
+      document.querySelectorAll('.whole-text-paragraph').forEach(el => el.classList.remove('active-reading'));
+      document.querySelectorAll('.play-para-badge').forEach(el => {
+        el.innerText = '🔊 Click to Speak';
+      });
+    }
+
+    function updateTtsUi() {
+      const btn2 = document.getElementById('btnSpeakArea2');
+      const btn3 = document.getElementById('btnSpeakArea3');
+      const st2 = document.getElementById('ttsStatusArea2');
+      const st3 = document.getElementById('ttsStatusArea3');
+
+      if (btn2) {
+        if (isTtsSpeaking && currentTtsArea === 'area2') {
+          btn2.classList.add('speaking');
+          btn2.innerHTML = '🔊 Voice ON — Explaining Terms (Click to Turn Off)';
+        } else {
+          btn2.classList.remove('speaking');
+          btn2.innerHTML = '🔊 Turn On Voice & Explain All 17 Terms';
+        }
+      }
+
+      if (btn3) {
+        if (isTtsSpeaking && currentTtsArea === 'area3') {
+          btn3.classList.add('speaking');
+          btn3.innerHTML = '🔊 Voice ON — Explaining Movements (Click to Turn Off)';
+        } else {
+          btn3.classList.remove('speaking');
+          btn3.innerHTML = '🔊 Turn On Voice & Explain All 12 Movements';
+        }
+      }
+
+      if (st2) {
+        if (isTtsSpeaking && currentTtsArea === 'area2') {
+          const item = area2WholeText[currentTtsIndex];
+          st2.innerText = isTtsPaused
+            ? `⏸️ Paused on #${currentTtsIndex + 1}: ${item.name}`
+            : `🔊 Speaking (${currentTtsIndex + 1}/17): ${item.name}`;
+        } else {
+          st2.innerText = 'Ready to play';
+        }
+      }
+
+      if (st3) {
+        if (isTtsSpeaking && currentTtsArea === 'area3') {
+          const item = area3WholeText[currentTtsIndex];
+          st3.innerText = isTtsPaused
+            ? `⏸️ Paused on ${item.name}`
+            : `🔊 Speaking (${currentTtsIndex + 1}/12): ${item.name}`;
+        } else {
+          st3.innerText = 'Ready to play';
+        }
+      }
+    }
+
+    function speakItemAtIndex(area, index) {
+      if (!('speechSynthesis' in window)) {
+        alert('Your browser does not support Web Speech synthesis. Please use the MP3 player below.');
+        return;
+      }
+
+      const list = area === 'area2' ? area2WholeText : area3WholeText;
+      if (!list || index < 0 || index >= list.length) {
+        stopAllSpeech();
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      currentTtsArea = area;
+      currentTtsIndex = index;
+      isTtsSpeaking = true;
+      isTtsPaused = false;
+
+      clearReadingHighlights();
+      const paraEl = document.getElementById(`para-${area}-${index}`);
+      const badgeEl = document.getElementById(`badge-${area}-${index}`);
+      if (paraEl) {
+        paraEl.classList.add('active-reading');
+        paraEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      if (badgeEl) {
+        badgeEl.innerText = '🔊 Speaking Now...';
+      }
+      updateTtsUi();
+
+      const item = list[index];
+      const textToRead = area === 'area2' ? item.text : item.essayText;
+
+      const utterance = new SpeechSynthesisUtterance(textToRead);
+      utterance.rate = ttsSpeed;
+      utterance.lang = 'en-US';
+
+      if (selectedVoiceURI && availableVoices.length > 0) {
+        const matchedVoice = availableVoices.find(v => v.voiceURI === selectedVoiceURI);
+        if (matchedVoice) utterance.voice = matchedVoice;
+      }
+
+      utterance.onend = () => {
+        if (isTtsSpeaking && currentTtsArea === area && currentTtsIndex === index) {
+          if (index + 1 < list.length) {
+            speakItemAtIndex(area, index + 1);
+          } else {
+            stopAllSpeech();
+          }
+        }
+      };
+
+      utterance.onerror = (e) => {
+        if (e.error !== 'interrupted' && e.error !== 'canceled') {
+          console.warn('TTS error:', e);
+        }
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Check if pre-generated Car MP3 files exist and show the native audio players too
+    function checkMp3Files() {
+      fetch('audio/area2_terms.mp3', { method: 'HEAD' }).then(r => {
+        if (r.ok) document.getElementById('mp3PlayerWrapArea2').style.display = 'block';
+      }).catch(() => {});
+      fetch('audio/area3_movements.mp3', { method: 'HEAD' }).then(r => {
+        if (r.ok) document.getElementById('mp3PlayerWrapArea3').style.display = 'block';
+      }).catch(() => {});
+    }
+
+    // Initial setup on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderFlashcards(artworksData);
+      initTermsGame();
+      renderMovements();
+      renderWholeTextPanels();
+      populateVoices();
+      setTimeout(populateVoices, 500);
+      checkMp3Files();
+
+      // Auto-hide header on scroll down, show on scroll up
+      let lastScrollY = window.pageYOffset;
+      const header = document.querySelector('header');
+
+      window.addEventListener('scroll', () => {
+        const currentScrollY = window.pageYOffset;
+        if (currentScrollY > lastScrollY && currentScrollY > 70) {
+          // Scrolling down
+          header.classList.add('header-hidden');
+        } else {
+          // Scrolling up or at top
+          header.classList.remove('header-hidden');
+        }
+        lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+      }, { passive: true });
+    });
+  </script>
+</body>
+</html>
